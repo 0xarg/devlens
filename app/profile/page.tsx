@@ -18,12 +18,32 @@ import prisma from "@/db/prisma";
 import { toast } from "sonner";
 import { User } from "@/types/user";
 import axios from "axios";
+import { Input } from "@/components/ui/input";
 
 export default function () {
   const { data: session, status } = useSession();
   const [editBio, setEditbio] = useState(false);
   const [user, setUser] = useState<User>();
+  const [skills, setSkills] = useState<string[]>([]);
   const bioRef = useRef<HTMLTextAreaElement>(null);
+  const skillInputRef = useRef<HTMLInputElement>(null);
+
+  function enterSkill(e: React.KeyboardEvent<HTMLInputElement>) {
+    console.log("inside enterSkill");
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const value = skillInputRef.current?.value.trim();
+
+      console.log(value);
+      if (value) {
+        setSkills((prev) => [...prev, value]);
+        if (skillInputRef.current) {
+          skillInputRef.current.value = "";
+        }
+      }
+      console.log(skills);
+    }
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,6 +76,14 @@ export default function () {
             <p className="text-neutral-600 font-medium">
               {session?.user.email}
             </p>
+            <h1>
+              user skills
+              <br />
+              {skills.map((skill, index) => (
+                <Badge key={index}>{skill}</Badge>
+              ))}
+            </h1>
+            <Input onKeyDown={enterSkill} ref={skillInputRef} />
 
             <Badge variant={"outline"} className="mt-7 font-semibold ">
               <GithubIcon /> repository

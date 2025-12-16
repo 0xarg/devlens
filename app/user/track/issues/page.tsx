@@ -272,7 +272,7 @@ const IssuesTracker = () => {
                           <div className="flex flex-wrap items-center gap-2">
                             <Badge variant="outline" className="gap-1">
                               <GitBranch className="w-3 h-3" />
-                              {issue.issue.owner}/{issue.issue.name}
+                              {issue.issue.comments}/{issue.issue.name}
                             </Badge>
                             {issue.issue.labels.map((label) => (
                               <Badge
