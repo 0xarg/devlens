@@ -20,6 +20,8 @@ export async function GET() {
     if (!userIssues) {
       throw new Error("No issues found");
     }
+    // console.log("-----------");
+    // console.log(userIssues);
 
     return NextResponse.json(
       {

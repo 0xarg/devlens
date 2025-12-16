@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   try {
     const issue = await prisma.issue.findFirst({
       where: {
-        githubId: issueId,
+        id: issueId,
       },
     });
 
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     const userExists = !!(await prisma.userIssue.findFirst({
       where: {
         userId,
+        issueId,
       },
     }));
 
