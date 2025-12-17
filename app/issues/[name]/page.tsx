@@ -127,7 +127,8 @@ const Issues = ({ params }: { params: { name: string } }) => {
           toast("AI Response Fetched");
         } else if (res.status === 202) {
           const data = res.data.issue;
-          setAIStats(data);
+          setAIStats((prev) => [...prev, res.data.issue]);
+
           setShowAI(true);
           toast("Response Fetched from DB");
         } else {
