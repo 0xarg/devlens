@@ -111,10 +111,10 @@ const Issues = ({ params }: { params: { name: string } }) => {
     ),
   ];
 
-  const aiTake = useCallback(async () => {
+  const aiTake = useCallback(async (issue: Issue) => {
     await axios
       .post("/api/ai/issue/stats", {
-        issue: issues,
+        issue: issue,
       })
       .then((res) => {
         if (res.status === 200) {
@@ -127,10 +127,12 @@ const Issues = ({ params }: { params: { name: string } }) => {
           toast("AI Response Fetched");
         } else if (res.status === 202) {
           const data = res.data.issue;
+          console.log(data);
           setAIStats((prev) => [...prev, res.data.issue]);
 
           setShowAI(true);
           toast("Response Fetched from DB");
+          console.log(aiStats);
         } else {
           toast("Error getting response from AI");
           return;
@@ -316,7 +318,7 @@ const Issues = ({ params }: { params: { name: string } }) => {
                               variant={"outline"}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                aiTake();
+                                aiTake(issue);
                               }}
                             >
                               AI's Take

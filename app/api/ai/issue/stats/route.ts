@@ -5,7 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log(data);
+  // console.log("Data is below");
+  // console.log(data.issue.labels);
+  // console.log("Data is above");
 
   const prompt = `
         You are a concise assistant. Input is a GitHub issue. Produce JSON only with keys:
@@ -44,13 +46,16 @@ export async function POST(req: NextRequest) {
     if (!repo) {
       throw new Error("Repo not found");
     }
-    console.log(data);
+    // console.log(data);
 
     const issue = await prisma.issue.findFirst({
       where: {
-        githubId: data.issue.number,
+        githubId: data.issue.id,
       },
     });
+    console.log("issue is below");
+    console.log(issue);
+    console.log("issue is above");
 
     if (issue) {
       console.log("Issue found in DB");
@@ -75,17 +80,20 @@ export async function POST(req: NextRequest) {
     const response = completion.choices[0].message;
 
     const finaldata = safeParseAI(response.content ?? "");
-    const labels = data.issue.labels.map((l: any) => l.name);
+    // const labels = data.issue.labels.map((l: any) => l.name);
+    // console.log(data.issue.labels);
+    // console.log(labels);
 
     const newIssue = await prisma.issue.create({
       data: {
-        githubUrl: data.issue.html_url,
+        githubUrl: data.issue.url,
+        githubId: data.issue.id,
         title: data.issue.title,
         repoId: repo.id,
         ailabels: finaldata.labels,
-        labels,
-        githubId: data.issue.number,
+        labels: data.issue.labels,
         skills: finaldata.skills,
+        body: data.issue.body,
         cause: finaldata.cause ?? "",
         summary: finaldata.summary ?? "",
         difficulty: finaldata.difficulty ?? "",
@@ -94,9 +102,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        issue: response,
+        issue: newIssue,
         issueId: newIssue.id,
-        issueNumber: newIssue.githubId
+        issueNumber: newIssue.githubId,
       },
       { status: 200 }
     );
