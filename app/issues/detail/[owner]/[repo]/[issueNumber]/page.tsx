@@ -24,7 +24,7 @@ import Navbar from "@/app/components/Navbar";
 import { useCallback, useEffect, useState } from "react";
 import Showdown from "showdown";
 import axios from "axios";
-import { Issue } from "@/app/issues/[name]/page";
+import { Issue } from "@/types/issues";
 import {
   InputGroup,
   InputGroupAddon,
@@ -193,7 +193,7 @@ export default function IssueDetail({
                         {issue?.owner}/{issue?.name}
                       </span>
                       <span>•</span>
-                      <span>#{issue?.number}</span>
+                      <span>#{issue?.githubId}</span>
                     </CardDescription>
                   </div>
                   <Badge
@@ -229,13 +229,13 @@ export default function IssueDetail({
             <CardContent>
               <div
                 className="prose prose-sm dark:prose-invert max-w-none mt-6"
-                dangerouslySetInnerHTML={{ __html: issue.htmlBody }}
+                dangerouslySetInnerHTML={{ __html: issue.htmlBody ?? "" }}
               />
 
               <div className="mt-8 pt-6 border-t">
                 <Button variant="outline" className="hover-scale" asChild>
                   <a
-                    href={`https://github.com/${issue?.owner}/${issue?.name}/issues/${issue?.number}`}
+                    href={`https://github.com/${issue?.owner}/${issue?.name}/issues/${issue?.githubId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

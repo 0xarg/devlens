@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Github, GitBranch } from "lucide-react";
@@ -74,7 +74,7 @@ const Login = () => {
             transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
             className="py-8"
           >
-            <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+            <div className="w-24 h-24 mx-auto rounded-full bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
               <Github className="w-12 h-12 text-primary" />
             </div>
           </motion.div>
@@ -87,8 +87,7 @@ const Login = () => {
             <Button
               size="lg"
               className="w-full gap-2 hover-scale"
-              onClick={()=>signIn('github',{callbackUrl:'/dashboard'})}
-              
+              onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
             >
               <Github className="w-5 h-5" />
               Continue with GitHub

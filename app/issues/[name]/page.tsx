@@ -28,21 +28,21 @@ import { toast } from "sonner";
 import CustomSpinner from "@/app/components/CustomSpinner";
 import { safeParseAI } from "@/lib/utils/parseAIRes";
 import { AIStatsIssue } from "@/types/ai";
+import { Issue } from "@/types/issues";
 
-export interface Issue {
-  id: number;
-  title: string;
-  number: number;
-  body: string;
-  state: string;
-  labels: string[];
-  comments: number;
-  createdAt: string;
-  htmlBody: string;
-  url: string;
-  name: string;
-  owner: string;
-}
+// export interface Issue {
+//   id: number;
+//   title: string;
+//   number: number;
+//   body: string;
+//   state: string;
+//   labels: string[];
+//   comments: number;
+//   createdAt: string;
+//   url: string;
+//   name: string;
+//   owner: string;
+// }
 
 interface Repo {
   repoId: number;
@@ -278,7 +278,7 @@ const Issues = ({ params }: { params: { name: string } }) => {
                         router.push(
                           `/issues/detail/${issue.owner}/${encodeURIComponent(
                             issue.name
-                          )}/${issue.id}`
+                          )}/${issue.githubId}`
                         )
                       }
                     >
@@ -339,7 +339,8 @@ const Issues = ({ params }: { params: { name: string } }) => {
                             <div className=" flex items-center gap-4">
                               {aiStats
                                 .filter(
-                                  (stats) => stats.issueNumber === issue.number
+                                  (stats) =>
+                                    stats.issueNumber === issue.githubId
                                 )
                                 .flatMap((stats) => stats.skills)
                                 .map((skill, index) => (
@@ -353,7 +354,8 @@ const Issues = ({ params }: { params: { name: string } }) => {
                                 ))}
                               {aiStats
                                 .filter(
-                                  (stats) => stats.issueNumber === issue.number
+                                  (stats) =>
+                                    stats.issueNumber === issue.githubId
                                 )
                                 .map((stats, index) => (
                                   <Badge
