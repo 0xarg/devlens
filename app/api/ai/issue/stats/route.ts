@@ -46,11 +46,13 @@ export async function POST(req: NextRequest) {
     if (!repo) {
       throw new Error("Repo not found");
     }
-    // console.log(data);
+    console.log("data.issue");
+    console.log(data.issue);
+    console.log("data.issue above");
 
     const issue = await prisma.issue.findFirst({
       where: {
-        githubId: data.issue.id,
+        githubId: data.issue.number,
       },
     });
     console.log("issue is below");
